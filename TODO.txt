@@ -1,0 +1,5 @@
+ - Create depth first search
+ - Create breadth first search
+ 
+ - Check if is_prime() algorithm is the best possible
+ - Check if kmp is working properly
