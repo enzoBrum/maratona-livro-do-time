@@ -5,7 +5,8 @@ using namespace std;
 using vi = vector<int>;
 using ii = pair<int, int>;
 
-class SuffixArray {
+class SuffixArray { // remember to add $ to string end before constructing the
+                    // suffix array
 private:
   vi RA;                              // rank array
   void countingSort(int k) {          // O(n)
