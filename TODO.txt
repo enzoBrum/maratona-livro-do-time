@@ -3,3 +3,6 @@
  
  - Check if is_prime() algorithm is the best possible
  - Check if kmp is working properly
+
+- Add pascal triangle hingy
+- Add many more algorithms. (Halim?)
