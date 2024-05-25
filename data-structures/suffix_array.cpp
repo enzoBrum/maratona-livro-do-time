@@ -5,8 +5,8 @@ using namespace std;
 using vi = vector<int>;
 using ii = pair<int, int>;
 
-class SuffixArray { // remember to add $ to string end before constructing the
-                    // suffix array
+class SuffixArray {
+
 private:
   vi RA;                              // rank array
   void countingSort(int k) {          // O(n)
@@ -56,4 +56,3 @@ public:
   SuffixArray(const char *initialT, const int _n) : T(initialT), n(_n) {
     constructSA(); // O(n log n)
   };
-:x

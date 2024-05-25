@@ -1,5 +1,5 @@
 '''
-Returns the distances between all vertex pairs in O(n³)
+Returns the distances between all vertex pairs in O(n^3)
 Overrides the matrix "m" of distances between vertices.
 
 IMPORTANT: the matrix "m" must have value INFINITY for 

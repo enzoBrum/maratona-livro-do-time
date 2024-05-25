@@ -4,7 +4,7 @@ class FenwickTree:
     - Consegue atualizar um elemento por vez em O(log n)
     - O(n log n) pra construir
     - indexada por 1
-    - queries também devem ser indexadas por 1
+    - queries tambem devem ser indexadas por 1
     """
 
     """
