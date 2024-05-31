@@ -6,3 +6,5 @@
 
 - Add pascal triangle hingy
 - Add many more algorithms. (Halim?)
+
+- Add tags to each algorithm, just in case. For example, kuhn's algorithm should be: (Grafos, Emparelhamento máximo, O(VE))
