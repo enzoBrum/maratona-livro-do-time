@@ -7,6 +7,13 @@
 using namespace std;
 using ll = long long;
 
+#include <bits/stdc++.h>
+
+using namespace std;
+using pii = pair<int, int>;
+using ll = long long;
+using ull = unsigned long long;
+
 struct SegmentTree {
 
   inline int left(int p) { return p * 2; }
@@ -17,8 +24,9 @@ struct SegmentTree {
     n = vec.size();
     int sz = 4 * n;
 
-    tree.resize(sz, 1e9);
+    tree.assign(sz, 1e9);
     lazy.assign(sz, -1);
+
     build(1, 0, n - 1, vec);
   }
 
@@ -53,7 +61,7 @@ struct SegmentTree {
 
   void update(int i, int j, int v) { update(1, 0, n - 1, i, j, v); }
 
-  vector<int> tree, lazy;
+  vector<int> lazy, tree;
   int n;
 
 private:
@@ -70,58 +78,18 @@ private:
   }
 
   void update(int p, int l, int r, int i, int j, int v) {
-    if (l > r)
+    propagate(p, l, r);
+    if (i > j)
       return;
-    if (l == i && r == j) {
+    if (l >= i && r <= j) {
       tree[p] = v;
       lazy[p] = v;
       return;
     }
 
-    propagate(p, l, r);
     int m = (l + r) / 2;
     update(left(p), l, m, i, min(j, m), v);
-    update(right(p), m + 1, r, max(l, m + 1), j, v);
+    update(right(p), m + 1, r, max(i, m + 1), j, v);
     tree[p] = merge(tree[left(p)], tree[right(p)]);
   }
 };
-
-int main() {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
-
-  int n, k;
-  while (cin >> n >> k) {
-    vector<int> vec(n);
-    for (auto &v : vec)
-      cin >> v;
-
-    SegmentTree seg(vec);
-
-    while (k--) {
-      char c;
-      cin >> c;
-
-      if (c == 'C') {
-        int i, v;
-        cin >> i >> v;
-        i--;
-        seg.update(i, v);
-      } else {
-        int i, j;
-        cin >> i >> j;
-        i--;
-        j--;
-        int v = seg.query(i, j);
-        if (!v)
-          cout << '0';
-        else if (v > 0)
-          cout << '+';
-        else
-          cout << '-';
-      }
-    }
-    cout << '\n';
-  }
-}
