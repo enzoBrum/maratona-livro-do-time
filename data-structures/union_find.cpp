@@ -5,7 +5,7 @@ struct UnionFind {
   UnionFind(int n) {
     p.resize(n);
     rank.assign(n, 1);
-    iota(p.begin(), p.end(), 0);
+    iota(p.begin(), p.end(), -1);
   }
 
   int find_set(int i) {
