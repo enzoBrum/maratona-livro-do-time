@@ -5,7 +5,8 @@ struct UnionFind {
   UnionFind(int n) {
     p.resize(n);
     rank.assign(n, 1);
-    iota(p.begin(), p.end(), -1);
+    set_size.assign(n, 1);
+    iota(p.begin(), p.end(), 0);
   }
 
   int find_set(int i) {
@@ -30,7 +31,9 @@ struct UnionFind {
     p[i] = j;
     if (rank[i] == rank[j])
       rank[j]++;
+
+    set_size[j] += set_size[i];
   }
 
-  vector<int> p, rank;
+  vector<int> p, rank, set_size;
 };
