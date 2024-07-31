@@ -1,4 +1,6 @@
 /*
+  MST (Kruskal algorithm)
+  Utilizes UnionFind and Edge structures. Edge only accepts integer edge weights.
   For maximum spanning tree, just turn the edge weights negative.
   Also works for minimum edge product.
 */
@@ -43,27 +45,26 @@ struct Edge {
     }
 };
 
-// ------------------ MAIN ------------------
+struct Kruskal {
+    int n;
+    vector<Edge> edges;
 
-vector<Edge> edges;
-// read edges here
-sort(edges.begin(), edges.end());
+    Kruskal(int n, vector<Edge> &edges) : n(n), edges(edges) {}
 
-int n = 0; // PUT VERTEX COUNT HERE
-UnionFind uf = UnionFind(n);
-vector<Edge> mst;
-mst.reserve(n-1);
-int mstWeight = 0;
+    vector<Edge> mst() {
+        sort(edges.begin(), edges.end());
+        UnionFind uf = UnionFind(n);
+        vector<Edge> mst;
+        mst.reserve(n-1);
 
-for (Edge e : edges) {
-    if (uf.find(e.u) != uf.find(e.v)) {
-        mst.push_back(e);
-        mstWeight += e.weight;
-        uf.unionSets(e.u, e.v);
+        for (Edge e : edges) {
+            if (uf.find(e.u) != uf.find(e.v)) {
+                mst.push_back(e);
+                uf.unionSets(e.u, e.v);
+            }
+            if (mst.size() == n-1)
+                break;
+        }
+        return mst;
     }
-    
-    if (mst.size() == n-1)
-        break;
-}
-
-// ------------------ END MAIN ------------------
+};
