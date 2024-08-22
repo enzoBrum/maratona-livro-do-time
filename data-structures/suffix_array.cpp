@@ -55,4 +55,5 @@ public:
   vi SA;         // Suffix Array
   SuffixArray(const char *initialT, const int _n) : T(initialT), n(_n) {
     constructSA(); // O(n log n)
-  };
+  }
+};
