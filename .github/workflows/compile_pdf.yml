@@ -17,13 +17,13 @@ jobs:
         run: python generate_pdf.py
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S')"
+        run: echo "date=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
           root_file: notebook.tex
-          tag_name: ${{steps.date.outputs.date}}
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: notebook.pdf
+          tag_name: ${{steps.date.outputs.date}}-livro-do-time
