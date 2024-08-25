@@ -27,3 +27,4 @@ jobs:
         with:
           files: notebook.pdf
           tag_name: ${{steps.date.outputs.date}}-livro-do-time
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
