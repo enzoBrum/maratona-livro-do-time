@@ -80,7 +80,10 @@ if __name__ == "__main__":
     sections = get_sections()
     print(sections)
     tex = get_tex(sections)
+
     with open("contents.tex", "w") as f:
         f.write(tex)
-    latexmk_options = ["latexmk", "-pdf", "notebook.tex"]
-    subprocess.call(latexmk_options)
+
+    if not os.getenv("CI_CD"):
+        latexmk_options = ["latexmk", "-pdf", "notebook.tex"]
+        subprocess.call(latexmk_options)
