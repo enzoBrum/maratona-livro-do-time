@@ -5,7 +5,7 @@ double ternary_search(double l, double r) {
         double m2 = r - (r - l) / 3;
         double f1 = f(m1);      //evaluates the function at m1
         double f2 = f(m2);      //evaluates the function at m2
-        if (f1 < f2)
+        if (f1 < f2) // swap "<" for ">" for min instead of max
             l = m1;
         else
             r = m2;
