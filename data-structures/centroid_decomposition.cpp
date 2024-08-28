@@ -13,8 +13,7 @@ struct CentroidDecomposition {
   vector<vector<pii>> parents;
   vector<bool> removed;
 
-  CentroidDecomposition(vector<vector<int>> adj)
-    :tree{adj} {
+  CentroidDecomposition(vector<vector<int>> adj) : tree{adj} {
     int n = tree.size();
 
     subtrees_sz.resize(n);
@@ -76,7 +75,7 @@ struct CentroidDecomposition {
 
   int query(int u) {
     int ret = closest_red[u];
-    for (auto&[p, pd] : parents[u])
+    for (auto &[p, pd] : parents[u])
       ret = min(ret, pd + closest_red[p]);
 
     return ret;

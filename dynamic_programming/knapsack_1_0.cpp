@@ -24,4 +24,3 @@ int main() {
       dp[j] = max(dp[j], dp[j - price[i]] + pages[i]);
   cout << dp[x] << '\n';
 }
-

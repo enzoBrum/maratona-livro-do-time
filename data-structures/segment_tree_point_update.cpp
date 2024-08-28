@@ -13,11 +13,8 @@ struct SegmentTree {
     build(1, 0, n - 1, vec);
   }
 
-  inline pll merge(const pll& a, const pll& b) { 
-    return {
-      a.first + b.first,
-      min(a.second, b.second + a.first)
-    };
+  inline pll merge(const pll &a, const pll &b) {
+    return {a.first + b.first, min(a.second, b.second + a.first)};
   }
 
   void build(int p, int l, int r, vector<ll> &vec) {

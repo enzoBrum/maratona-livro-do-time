@@ -8,7 +8,8 @@
  */
 
 // hierholzer finds an eulerian path if it exists.
-// can't say I understand everything here but whatever. I'm way too short of time for that
+// can't say I understand everything here but whatever. I'm way too short of
+// time for that
 int N;
 vector<vi> AL; // Directed graph
 vi hierholzer(int s) {

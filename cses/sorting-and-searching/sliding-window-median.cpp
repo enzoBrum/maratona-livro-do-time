@@ -2,7 +2,7 @@
   *
   *
   *You are given an array of n integers. Your task is to calculate the median of
-each window of k elements, from left to right. 
+each window of k elements, from left to right.
 The median is the middle element
 when the elements are sorted. If the number of elements is even, there are two
 possible medians and we assume that the median is the smaller of them.

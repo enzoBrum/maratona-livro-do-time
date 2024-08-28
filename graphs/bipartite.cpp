@@ -1,7 +1,7 @@
 /*
-* Basically, checks if the graph can be colored with 2 colors.
-* If it's possible, the graph is bipartite.
-*/
+ * Basically, checks if the graph can be colored with 2 colors.
+ * If it's possible, the graph is bipartite.
+ */
 
 vector<vector<int>> AL;
 bool bipartite() {
@@ -15,7 +15,7 @@ bool bipartite() {
     int u = q.front();
     q.pop();
     for (auto &v : AL[u]) {
-      if (color[v] == INF) {     // don’t record distances
+      if (color[v] == INF) {
         color[v] = 1 - color[u]; // just record two colors
         q.push(v);
       } else if (color[v] == color[u]) { // u & v have same color
