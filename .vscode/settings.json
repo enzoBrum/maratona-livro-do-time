@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "*.mgcb": "mgcb-editor",
+        "vector": "cpp",
+        "random": "cpp",
+        "deque": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "system_error": "cpp",
+        "array": "cpp",
+        "regex": "cpp",
+        "format": "cpp"
+    }
+}
