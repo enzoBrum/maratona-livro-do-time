@@ -1,39 +1,70 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+// Constructor receives an integer n that is the amount of sets to be initially created. Zero indexed.6
 struct UnionFind {
+  vector<int> parent, size;
+  
   UnionFind(int n) {
-    p.resize(n);
-    rank.assign(n, 1);
-    set_size.assign(n, 1);
-    iota(p.begin(), p.end(), 0);
+      parent.reserve(n);
+      size.assign(n, 1);
+      
+      for (int i = 0; i < n; i++)
+          parent.push_back(i);
+  }
+  
+  int find(int v) {
+      if (v == parent[v])
+          return v;
+      return parent[v] = find(parent[v]);
+  }
+  
+  void unionSets(int a, int b) {
+      a = find(a);
+      b = find(b);
+      if (a != b) {
+          if (size[a] < size[b])
+              swap(a, b);
+          parent[b] = a; // subordinate b to a (smaller to bigger)
+          size[a] += size[b];
+      }
+  }
+};
+
+// Allows you to undo set unions - O(logn) union, O(1) per rollback.
+// Store the current state (i.e., history.size(), and, later on, do rollback() while history.size() != state).
+struct RollbackUnionFind {
+  vector<int> parent, size;
+  int components;
+  stack<pair<int*, int>> history;
+  
+  RollbackUnionFind(int n=0) {
+      parent.resize(n);
+      size.assign(n, 1);
+      iota(all(parent), 0);
+      components = n;
+  }
+  
+  int find(int v) {
+      if (v == parent[v])
+          return v;
+      return find(parent[v]);
   }
 
-  int find_set(int i) {
-    if (p[i] == i)
-      return i;
-
-    return p[i] = find_set(p[i]);
+  void change(int &x, int newVal) {
+      history.push({&x, x}); // x's current state
+      x = newVal;
   }
 
-  inline bool same_set(int i, int j) { return find_set(i) == find_set(j); }
-
-  void union_set(int i, int j) {
-    if (same_set(i, j))
-      return;
-
-    i = p[i];
-    j = p[j];
-
-    if (rank[i] > rank[j])
-      swap(i, j);
-
-    p[i] = j;
-    if (rank[i] == rank[j])
-      rank[j]++;
-
-    set_size[j] += set_size[i];
+  void rollback() {
+      auto[ptr, val] = history.top(); history.pop();
+      *ptr = val;
   }
-
-  vector<int> p, rank, set_size;
+  
+  void unionSets(int a, int b) {
+      a = find(a);
+      b = find(b);
+      if (a == b) return;
+      if (size[a] < size[b]) swap(a, b);
+      change(parent[b], a);
+      change(size[a], size[a]+size[b]);
+      change(components, components-1);
+  }
 };

@@ -19,3 +19,4 @@ struct SparseTable {
         return min(st[i][l], st[i][r - (1 << i) + 1]);
     }
 };
+

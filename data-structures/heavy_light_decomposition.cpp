@@ -42,6 +42,7 @@ public:
         dfsSz(0, -1, adj);
         dfsHLD(0, -1, adj);
         p[0] = -1; // DANGEROUS BUT NEEDED
+	    // gotta be careful with indexing if you wanna use a custom vector
         vector<int> emptyVector(n, 0);
         st = LazySegmentTree(emptyVector);
     }
@@ -59,13 +60,20 @@ public:
         st.update(pos[u], pos[u] + sz[u] - 1, delta);
     }
 
+    int queryPath(int a, int b) {
+        if (pos[a] < pos[b]) swap(a, b);
+	    if (h[a] == h[b])
+            return st.query(pos[b], pos[a]);
+        return st.query(pos[h[a]], pos[a]) + queryPath(p[h[a]], b);
+    }
+
     void updatePath(int a, int b, int delta) {
         if (pos[a] < pos[b]) swap(a, b);
-		if (h[a] == h[b]) {
+	    if (h[a] == h[b]) {
             st.update(pos[b], pos[a], delta);
             return;
         }
-		st.update(pos[h[a]], pos[a], delta);
+	    st.update(pos[h[a]], pos[a], delta);
         updatePath(p[h[a]], b, delta);
     }
 

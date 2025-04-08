@@ -68,3 +68,35 @@ public:
         build(root);
     }
 };
+
+/*
+Remember that, for any path u->v, there is one (and only one) common ancestroid on the path: namely,
+the LCA(u, v) on the centroid tree. That is why, for distance stuff, you simply update all of the
+ancestroids: that works because you ensure the LCA will be updated.
+
+void setDist(int u, int p, int ancestroid, int dist=1) {
+    ancestroids[u].push_back({dist, ancestroid});
+    for (int v : adj[u]) {
+        if (v == p || removed[v]) continue;
+        setDist(v, u, ancestroid, dist+1);
+    }
+}
+ 
+void paint(int u) {
+    closestRed[u] = {0, u};
+    for (auto[dist, ancestroid] : ancestroids[u])
+        closestRed[ancestroid] = min(closestRed[ancestroid], {dist, u});
+}
+
+int query(int u) {
+    ii ans = closestRed[u];
+    for (auto[dist, ancestroid] : ancestroids[u])
+        ans = min(ans, {dist+closestRed[ancestroid].first, closestRed[ancestroid].second});
+    return ans.second;
+}
+
+And within build():
+for (int v : adj[centroid])
+    if (!removed[v])
+        setDist(v, centroid, centroid);
+*/
