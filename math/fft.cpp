@@ -78,28 +78,12 @@ And, after we do the convolution, we have that
 ans[k] = fft[n-1-k]
 */
 
-// THIS ONE COMPUTES sum(i-j=k) A[i] * B[j]
-vector<int> computeModifiedConvolution(vector<int> &a) {
-    /*
-    I wanna compute the convolution
-    ans[d] = sum(i-j=d) a[i] * b[j]
-    where b = a.
-    We have seen above that the transformed version 'at' of 'a' should be
-    at[n-1-i] = a[i]
-    Let's compute that and multiply.
-    */
-    vector<int> at(a.size());
-    for (int i = 0; i < a.size(); i++)
-        at[a.size()-1-i] = a[i];
+// sum(i-j=k) A[i] * B[j]
+vector<int> subtractionConvolution(vector<int> &a) {
+    vector<int> at = a;
+    reverse(all(at));
     vector<int> c = multiply(at, a);
-    /*
-    But since in that computation r was equal to n-1-k, then, we have that ans[k] is not at position k,
-    but actually n-1-k. Therefore, we compute the answer vector below doing that index rearrangement.
-    Since 'ans' must hold an index equivalent to the maximum difference xj-xi, then, its size must
-    be MAX_X+1.
-    */
-    vector<int> ans(MAX_X+1, 0);
-    for (int k = 0; k < ans.size(); k++)
-        ans[k] = c[a.size()-1-k];
+    vector<int> ans(c.begin(), c.begin()+a.size());
+    reverse(all(ans));
     return ans;
 }
