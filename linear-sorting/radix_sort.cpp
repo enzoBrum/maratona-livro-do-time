@@ -10,7 +10,7 @@ using ull = unsigned long long;
 // bases.
 
 // int base = 32768;
-int base = 512; // IDK a good value
+const int base = 512; // IDK a good value
 
 int get_digit(int a, int divisor) { return a / divisor % base; }
 
