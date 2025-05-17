@@ -1,7 +1,8 @@
-const long long minRand = 1;
-const long long maxRand = 100;
+const int minRand = 1;
+const int maxRand = 1e12;
 
-default_random_engine generator;
-uniform_int_distribution<long long> distribution(minRand, maxRand);
+random_device rd;
+mt19937 gen(rd());
+uniform_int_distribution<int> distribution(minRand, maxRand);
 
-long long someRand = distribution(generator);
+int someRand = distribution(gen);

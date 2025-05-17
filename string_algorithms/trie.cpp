@@ -1,27 +1,22 @@
 struct Trie {
     vector<map<char, int>> next;
-    vector<int> count, val, mostFrequentCount, indexOfMostFrequent;
+    vector<int> count;
+    vector<int> mostFrequentContinuationCount;
+    vector<int> mostFrequentContinuationId;
+    vector<int> indexOnOrderedVector;
 
-    Trie() { 
-        next.reserve(1e6);
-        count.reserve(1e6);
-        val.reserve(1e6);
-        mostFrequentCount.reserve(1e6);
-        indexOfMostFrequent.reserve(1e6);
-        addNode(); 
-    }
+    Trie() { addNode(); } // you can reserve the vectors here if you need to
 
     int addNode() {
         next.push_back({});
         count.push_back(0);
-        val.push_back(0);
-        mostFrequentCount.push_back(0);
-        indexOfMostFrequent.push_back(0);
-
+        mostFrequentContinuationCount.push_back(-1);
+        mostFrequentContinuationId.push_back(-1);
+        indexOnOrderedVector.push_back(0);
         return next.size()-1;
     }
 
-    void addWord(string const &s, int v = 0) {
+    void addWord(string const &s, int idx) {
         int cur = 0; 
         for (char c : s) {
             if (!next[cur].count(c))
@@ -29,7 +24,7 @@ struct Trie {
             cur = next[cur][c];
         }
         count[cur]++;
-        val[cur] = v;
+        indexOnOrderedVector[cur] = idx;
     }
 
     int getId(string const &s) {
@@ -41,13 +36,20 @@ struct Trie {
         return cur;
     }
 
-    void relaxValue(string const &s, int count, int idx) {
+    int getCount(string const &s) {
+        return count[getId(s)];
+    }
+
+    // update 'mostFrequentContinuation' for every prefix of s
+    void relax(string const &s) {
+        int id = getId(s);
+        int currentCount = count[id];
         int cur = 0;
         for (char c : s) {
             cur = next[cur][c];
-            if (count > mostFrequentCount[cur]) {
-                mostFrequentCount[cur] = count;
-                indexOfMostFrequent[cur] = idx;
+            if (mostFrequentContinuationCount[cur] < currentCount) {
+                mostFrequentContinuationCount[cur] = currentCount;
+                mostFrequentContinuationId[cur] = id;
             }
         }
     }
