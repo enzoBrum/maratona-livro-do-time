@@ -1,5 +1,3 @@
-// preprocessing: O(n log n)
-// range minimum query  (minimum element in [L, R] interval): O(1)
 struct SparseTable {
     vector<vector<int>> st;
     SparseTable(vector<int> &a) {
@@ -19,4 +17,3 @@ struct SparseTable {
         return min(st[i][l], st[i][r - (1 << i) + 1]);
     }
 };
-
