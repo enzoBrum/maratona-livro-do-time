@@ -1,7 +1,7 @@
 /*
 About Lagrange interpolation:
 You are given k+1 points. You want the coefficients of the kth degree polynomial
-that goes through them. You can do that for arbitrary (x, y) in O(k²) time. This
+that goes through them. You can do that for arbitrary (x, y) in O(k^2) time. This
 is explained as follows:
 Suppose the said polynomial is
 P(x) = l_1*f(x1) + l_2*f(x2) + ... + l_k+1*f(x_(k+1))
@@ -21,7 +21,7 @@ It is pretty clear that if you throw xi onto l_i it will be 1, and 0 if you thro
 any of the other (k+1-1) points.
 
 So, it means that P is already the polynomial you were searching for. Evaluating it
-takes O(k²), unless there is any property of the numbers you are working with such
+takes O(k^2), unless there is any property of the numbers you are working with such
 that you can transition from l_i to l_(i+1) in sublinear time...
 */
 

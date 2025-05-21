@@ -46,8 +46,8 @@ piecewise linear function (concave up).
 
 Complexity: O(F*V*E)
 F = 2048 (at most 8 per white board cell, i.e. 8*16*16)
-V = 1538 (1 + V + 4*W + H + 1) = (2 + 2*16² + 4*16²)
-E = 1792 (V + W + 2*W + W + W + H) = (V + H + 5*W) = (2*16² + 5*16²)
+V = 1538 (1 + V + 4*W + H + 1) = (2 + 2*16^2 + 4*16^2)
+E = 1792 (V + W + 2*W + W + W + H) = (V + H + 5*W) = (2*16^2 + 5*16^2)
 total = 5.644.484.608 = 56e8
 But it is the real worst case of ford fulkerson AND spfa...
 

@@ -32,7 +32,7 @@ Iterate through every divisor 'g' of 'i' and consider it as a gcd of something. 
 j = m*g
 and see if that makes the equation true. If it does, we found a working 'j'.
 
-Total complexity: O(nlog³n)
+Total complexity: O(nlog^3n)
 */
 
 vector<vector<int>> divsSieve(int n) {

@@ -23,10 +23,10 @@ Consider a set of cycles made by who owns what flag. For example, person 1 owns 
 into several cycles with sum of sizes equal to n. The deal is that swapping 2 flags of the same cycle
 splits it, and 2 flags on different cycles merge them.
 Let's do a dp. The amount of states is the amount of integer partitions p(n) and remaining movements.
-p(n) for n = 30 is 5604, and the maximum amount of movements is k = 50. For each state, compute the n²
+p(n) for n = 30 is 5604, and the maximum amount of movements is k = 50. For each state, compute the n^2
 movements you can do (one for each swapped pair) and count in how many ways you can reach the ending
 state (all of the cycles with size 1). This gives a time complexity of:
-p(n) * k * n²
+p(n) * k * n^2
 = 5604 * 50 * 30 * 30
 = 252180000
 = 2e8
