@@ -22,7 +22,7 @@ def get_sections() -> list[tuple[str, list[tuple[str, str]]]]:
         cur_section = root[2:].replace("-", " ").replace("_", " ").title()
         cur_files = [
             (os.path.join(root[2:], file), file.split(".")[0].replace("_", " ").title())
-            for file in files
+            for file in sorted(files)
             if file.split(".")[-1]
             in (
                 "py",
