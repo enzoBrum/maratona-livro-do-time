@@ -29,7 +29,7 @@ sum(i E A) Ri * ki + sum(i E B) Ri * (-ji) = sum(i E B) Gi - sum(i E A) Gi
 Notice that the above expression is a linear combination of all Ri. This means that an answer
 exists iff there is a linear combination of Ri that ends up summing any possible difference of
 the G of the sets, given that there are 2 nonempty partitions of G with that difference.
-Therefore, from "extended Bèzout", there is an answer iff
+Therefore, from "extended Bezout", there is an answer iff
 gcd(all Ri) | some difference of G
 Also, it is clear that, if some possible difference is different than the sum of all G, there
 is always 2 nonempty sets that give that difference. But if the difference is EQUAL to the sum
