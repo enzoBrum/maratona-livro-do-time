@@ -11,7 +11,7 @@ title = "UFSC livro do time"
 
 def get_sections() -> list[tuple[str, list[tuple[str, str]]]]:
     sections = []
-    for root, dirs, files in os.walk("."):
+    for root, dirs, files in sorted(os.walk(".")):
         if ".git" in dirs:
             dirs.remove(".git")
         if root == ".":
