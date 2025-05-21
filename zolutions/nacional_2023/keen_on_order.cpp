@@ -20,7 +20,7 @@ Idea:
 If k >= 25, there is always a permutation that does not exist. The following algorithm always works:
  - Take the number whose first appearance is as far ahead as possible. It is at least the 25th element.
  - Now, take another number whose first appearence AFTER the previous number is as far ahead as possible.
-   It is necessarily at least 24 numbers before the previous one.
+   It is necessarily at least 24 numbers after the previous one.
  - Continue that idea.
 That algorithm always works because for such subsequence to exist, it would have size
 25 + 24 + ... + 1 = 25(1+25)/2 = 325 > n = 300
