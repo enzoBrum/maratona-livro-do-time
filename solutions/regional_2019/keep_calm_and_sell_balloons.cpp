@@ -11,6 +11,10 @@ using ll = long long;
 #define rall(x) x.rbegin(), x.rend()
 
 /*
+Exercise:
+You are given a 2*n matrix. You start on some cell and move orthogonally/diagonally without repeating
+cells. You wanna know in how many different ways you can traverse the matrix.
+
 Idea:
 Let 'back(n)' be the amount of ways you can walk from the corner of a 2*n block to the
 other side, but coming back. Clearly, back(n) = 2^n.

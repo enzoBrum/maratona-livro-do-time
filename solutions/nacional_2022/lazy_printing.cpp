@@ -10,6 +10,11 @@ using ll = long long;
 #define rall(x) x.rbegin(), x.rend()
 
 /*
+Exercise:
+You wanna compose a string 's' as a sum of several strings 'm' of length <= D
+such that s = m1^j1 + p(m1) + m2^j2 + p(m2) + ... + mk^jk + p(mk)
+where p(r) is a (possibly empty) prefix of the string r.
+
 Idea: suppose you have a string s and you want to build it by concatenating some
 other string p several times + a prefix of p. The minimum length p can have is
 given by KMP's n - lps[n-1] for a string of length n.
