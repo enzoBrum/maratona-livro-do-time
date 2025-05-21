@@ -79,11 +79,11 @@ ans[k] = fft[n-1-k]
 */
 
 // sum(i-j=k) A[i] * B[j]
-vector<int> subtractionConvolution(vector<int> &a) {
+vector<int> subtractionConvolution(vector<int> &a, vector<int> &b) {
     vector<int> at = a;
     reverse(all(at));
-    vector<int> c = multiply(at, a);
-    vector<int> ans(c.begin(), c.begin()+a.size());
-    reverse(all(ans));
-    return ans;
+    vector<int> c = multiply(at, b);
+    c.resize(a.size());
+    reverse(all(c));
+    return c;
 }
