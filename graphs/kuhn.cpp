@@ -15,7 +15,7 @@ edge on the matching and its done.
 Remembering that an alternating path is a path that alternates between unmatched and matched edges.
 */
 
-
+// REGULAR KUHN
 // adjacency of LEFT vertices
 vector<vector<int>> adj;
 // match[i] is the idx of the left vertex matched to the ith right vertex (match.size() == RIGHT)
@@ -35,39 +35,42 @@ bool tryKuhn(int v) {
     return false;
 }
 
-// Within main:
-adj.assign(LEFT, {});
-// Build adj here (remembering only left pointing to right)
-match.assign(RIGHT, -1);
-int matchingSize = 0;
-for (int v = 0; v < LEFT; ++v) {
-    used.assign(LEFT, false);
-    matchingSize += tryKuhn(v);
+int getMatching() {
+    int matchingSize = 0;
+    for (int v = 0; v < adj.size(); ++v) {
+        used.assign(adj.size(), false);
+        matchingSize += tryKuhn(v);
+    }
+    return matchingSize;
+}
+
+signed main() {
+    adj.assign(LEFT, {});
+    match.assign(RIGHT, -1);
+    int m = getMatching();
 }
 
 
 
-
-
-
-// With heuristics, main would be something like this:
-adj.assign(LEFT, {});
-match.assign(RIGHT, -1);
-
-vector<bool> used1(n, false);
-for (int v = 0; v < LEFT; ++v) {
-    for (int to : adj[v]) {
-        if (match[to] == -1) {
-            match[to] = v;
-            used1[v] = true;
-            break;
+// HEURISTICS VERSION (everything else is equal)
+int getMatching() {
+    vector<bool> used1(adj.size(), false);
+    int matchingSize = 0;
+    for (int v = 0; v < adj.size(); ++v) {
+        for (int to : adj[v]) {
+            if (match[to] == -1) {
+                match[to] = v;
+                used1[v] = true;
+                matchingSize++;
+                break;
+            }
         }
     }
-}
-int matchingSize = 0;
-for (int v = 0; v < LEFT; ++v) {
-    if (used1[v])
-        continue;
-    used.assign(LEFT, false);
-    matchingSize += tryKuhn(v);
+    for (int v = 0; v < adj.size(); ++v) {
+        if (used1[v])
+            continue;
+        used.assign(adj.size(), false);
+        matchingSize += tryKuhn(v);
+    }
+    return matchingSize;
 }
