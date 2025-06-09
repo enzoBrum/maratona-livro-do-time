@@ -302,3 +302,23 @@ using GI = Geometry<int>;
 using GF = Geometry<long double>;
 using IPoint = GI::Point;
 using FPoint = GF::Point;
+
+/*
+Emergency definitions using complex<double>:
+Vector addition:              a + b
+Scalar multiplication:        r * a
+Dot product:                  (conj(a) * b).x
+Cross product:                (conj(a) * b).y
+Squared distance:             norm(a - b)
+Euclidean distance:           abs(a - b)
+Angle of elevation:           arg(b - a)
+Slope of line (a, b):         tan(arg(b - a))
+Polar to cartesian:           polar(r, theta)
+Cartesian to polar:           point(abs(p), arg(p))
+Rotation about the origin:    a * polar(1.0, theta)
+Rotation about pivot p:       (a-p) * polar(1.0, theta) + p
+Angle ABC:                    abs(remainder(arg(a-b) - arg(c-b), 2.0 * M_PI))
+Project p onto vector v:      v * dot(p, v) / norm(v);
+Project p onto line (a, b):   a + (b - a) * dot(p - a, b - a) / norm(b - a)
+Reflect p across line (a, b): a + conj((p - a) / (b - a)) * (b - a)
+*/
