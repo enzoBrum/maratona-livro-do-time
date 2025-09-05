@@ -1,5 +1,0 @@
-# SOURCE: https://github.com/jaehyunp/stanfordacm/blob/master/contents.txt
-
-[Geometry]
-geometry/circle_intersection.cpp = Intersection Between Two Circles
-
