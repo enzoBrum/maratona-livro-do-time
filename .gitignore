@@ -6,3 +6,4 @@ notebook.out
 notebook.toc
 contents.tex
 .direnv
+.vscode/
