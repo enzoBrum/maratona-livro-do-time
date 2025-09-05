@@ -1,6 +1,6 @@
 int A[251][251];
 
-// Matrix A is n*m - O(n²m). Returns the index chosen for each line (1 indexed).
+// Matrix A is n*m - O(n^2m). Returns the index chosen for each line (1 indexed).
 #warning A is 1 based
 vector<int> hungarian(int n, int m) {
     vector<int> u(n+1), v(m+1), p(m+1), way(m+1);
