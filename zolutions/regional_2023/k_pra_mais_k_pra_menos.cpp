@@ -1,16 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-#define int long long
-const int INF = 0x3F3F3F3F;
-using ii = pair<int, int>;
-using ll = long long;
-#define all(x) x.begin(), x.end()
-#define rall(x) x.rbegin(), x.rend()
-
-const bool DEBUG = 0;
-
 /*
 Exercise:
 You are given the coefficients of the polynomials t(x) and p(x). Compute t(x+k) + p(x-k).
@@ -22,8 +9,8 @@ Remembering binomial expansion:
 
 The term x^t will appear on the expansion of x^i as its jth term iff i-j=t.
 So, our desired vector becomes
-c[t] = sum(i-j=t) (i choose j) * k^j * a[j];
-     = sum(i-j=t) i! * k^j * a[j] / (j! * t!)
+c[t] = sum(i-j=t) (i choose j) * k^j * a[i];
+     = sum(i-j=t) i! * k^j * a[i] / (j! * t!)
      = 1/t! * sum(i-j=t) i! * k^j * a[i] / j!        // ALWAYS TAKE OUT CONSTANTS OF THE SUM, WHENEVER POSSIBLE
      = 1/t! * sum(i-j=t) A[i] * B[j]
 where
@@ -34,85 +21,7 @@ Now, given the frequency of x^t on the expansion, we do that for the two polynom
 sum the frequencies of each x^i for every i.
 */
 
-const int MOD = 998244353;
-
-inline int add(int a, int b){
-    a += b;
-    if (a >= MOD) a -= MOD;
-    return a;
-}
-
-inline int mul(int a, int b){
-    return a * b % MOD;
-}
-
-int pwr(int a, int b){
-    int r = 1;
-    while (b) {
-        if (b & 1) r = mul(r, a);
-        a = mul(a, a);
-        b >>= 1;
-    }
-    return r;
-}
-
-int inv(int x) {
-    return pwr(x, MOD-2);
-}
-
-void ntt(vector<int> &a, bool rev){
-    int n = a.size();
-    vector<int> b = a;
-    int g = 1;
-    while (pwr(g, MOD / 2) == 1)
-        g++;
-    if (rev)
-        g = inv(g);
-    for (int step = n / 2; step; step /= 2) {
-        int w = pwr(g, MOD / (n / step));
-        int wn = 1;
-        for (int i = 0; i < n / 2; i += step) {
-            for (int j = 0; j < step; j++) {
-                int u = a[2 * i + j];
-                int v = mul(wn, a[2 * i + j + step]);
-                b[i + j] = add(u, v);
-                b[i + n / 2 + j] = add(u, MOD - v);
-            }
-            wn = mul(wn, w);
-        }
-        swap(a, b);
-    }
-    if(rev) {
-        int n1 = inv(n);
-        for (int &x : a)
-            x = mul(x, n1);
-    }
-}
-
-vector<int> multiply(vector<int> &a, vector<int> &b) {
-    vector<int> fa(all(a)), fb(all(b));
-    int n = 1;
-    while (n < a.size() + b.size())
-        n *= 2;
-    fa.resize(n); fb.resize(n);
-    ntt(fa, false); ntt(fb, false);
-
-    for (int i = 0; i < n; i++)
-        fa[i] = mul(fa[i], fb[i]);
-
-    ntt(fa, true);
-    return fa;
-}
-
-vector<int> subtractionConvolution(vector<int> &a, vector<int> &b) {
-    vector<int> at = a;
-    reverse(all(at));
-    vector<int> c = multiply(at, b);
-    c.resize(a.size());
-    reverse(all(c));
-    return c;
-}
-
+// Bring subtraction convolution here
 signed main() {
     cin.tie(0)->sync_with_stdio(0);
 
