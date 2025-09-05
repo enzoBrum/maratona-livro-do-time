@@ -47,7 +47,7 @@ struct LiChaoTree {
     Function get(int x, int v, int l, int r) {
         int m = (l + r) / 2;
         if (r == l) return t[v];
-        if (x < m) return best(t[v], get(x, 2 * v, l, m), x);
+        if (x <= m) return best(t[v], get(x, 2 * v, l, m), x);
         return best(t[v], get(x, 2 * v + 1, m+1, r), x);
     }
 };

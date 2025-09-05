@@ -1,7 +1,10 @@
-class CentroidDecomposition {
+struct CentroidDecomposition {
     vector<vector<int>> adj;
     vector<int> subtreeSz, removed, cnt;
     int maxDepth;
+    // pair {d, ancestroid}
+    // vector<vector<ii>> ancestroids;
+    // vector<ii> closestRed;
 
     // Sets sizes of subtrees of the tree rooted at 'u' bounded by removed vertices.
     void setSubtreeSizes(int u, int p = -1) {
@@ -42,6 +45,7 @@ class CentroidDecomposition {
         int centroid = getCentroid(u, u, u);
         removed[centroid] = 1;
 
+        // add O(sz) code here
         maxDepth = 0;
         for (int v : adj[centroid]) {
             if (removed[v]) continue;
@@ -55,7 +59,6 @@ class CentroidDecomposition {
                 build(v);
     }
 
-public:
     int k;
     ll totalPathsK;
     CentroidDecomposition(vector<vector<int>> &adj, int k, int root=0) : adj(adj), k(k) {
@@ -70,33 +73,37 @@ public:
 };
 
 /*
-Remember that, for any path u->v, there is one (and only one) common ancestroid on the path: namely,
-the LCA(u, v) on the centroid tree. That is why, for distance stuff, you simply update all of the
-ancestroids: that works because you ensure the LCA will be updated.
+Remember that, for any path u->v, there is at least one common ancestroid on the path: namely,
+the LCA(u, v) on the centroid tree is assured to be on the path. That is why, for distance stuff,
+you simply update all of the ancestroids: that works because you ensure the LCA will be updated.
 
-void setDist(int u, int p, int ancestroid, int dist=1) {
-    ancestroids[u].push_back({dist, ancestroid});
+void setDist(int u, int p, int ancestroid, int d=1) {
+    ancestroids[u].push_back({d, ancestroid});
     for (int v : adj[u]) {
         if (v == p || removed[v]) continue;
-        setDist(v, u, ancestroid, dist+1);
+        setDist(v, u, ancestroid, d+1);
     }
 }
  
 void paint(int u) {
     closestRed[u] = {0, u};
-    for (auto[dist, ancestroid] : ancestroids[u])
-        closestRed[ancestroid] = min(closestRed[ancestroid], {dist, u});
+    for (auto[d, ancestroid] : ancestroids[u])
+        closestRed[ancestroid] = min(closestRed[ancestroid], {d, u});
 }
 
-int query(int u) {
+ii query(int u) {
     ii ans = closestRed[u];
-    for (auto[dist, ancestroid] : ancestroids[u])
-        ans = min(ans, {dist+closestRed[ancestroid].first, closestRed[ancestroid].second});
-    return ans.second;
+    for (auto[d, ancestroid] : ancestroids[u])
+        ans = min(ans, {d+closestRed[ancestroid].first, closestRed[ancestroid].second});
+    return ans;
 }
 
 And within build():
 for (int v : adj[centroid])
     if (!removed[v])
         setDist(v, centroid, centroid);
+
+Within constructor:
+ancestroids.assign(n, {});
+closestRed.assign(n, {INF, 0});
 */

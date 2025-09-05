@@ -41,8 +41,7 @@ public:
         at.resize(n);
         dfsSz(0, -1, adj);
         dfsHLD(0, -1, adj);
-        p[0] = -1; // DANGEROUS BUT NEEDED
-	    // gotta be careful with indexing if you wanna use a custom vector
+    	// gotta be careful with indexing if you wanna use a custom vector
         vector<int> emptyVector(n, 0);
         st = LazySegmentTree(emptyVector);
     }

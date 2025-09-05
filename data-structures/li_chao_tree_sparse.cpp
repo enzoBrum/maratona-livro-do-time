@@ -1,18 +1,17 @@
 struct Function {
     // define here your function (which may be a line). Any pair of functions must
     // intersect at most once.
-    ii dish;
-    int id;
-    Function() {}
-    Function(ii dish, int id) : dish(dish), id(id) {}
-    double eval(int x) const {
-        return 1.0*(customers[x].value.first * dish.first + customers[x].value.second * dish.second) / (customers[x].value.first + customers[x].value.second);
+    bool isDefaultLine = false;
+    int slope, starty;
+    Function() : isDefaultLine(true) {}
+    Function(int slope, int starty) : slope(slope), starty(starty) {}
+    // LiChao itself doesn't call eval, so you can do anything here
+    __int128 eval(int x) const {
+        return (__int128)x*slope + starty;
     }
     bool isBetterThan(Function const &o, int x, bool isMin) const {
-        // caution when you have a tiebreaker (on this case id)
-        //if (fabs(this->eval(x)-o.eval(x)) < 1e-9)
-        //    return this->id < o.id;
-        // regular template code here
+        if (o.isDefaultLine) return true; // everyone overrides default lines
+        if (isDefaultLine) return false;
         if (isMin) return this->eval(x) < o.eval(x);
         else return this->eval(x) > o.eval(x);
     }
@@ -25,11 +24,7 @@ struct LiChaoTree {
         Vertex *leftChild = nullptr;
         Vertex *rightChild = nullptr;
 
-        Vertex(int l, int r, int isMin) : l(l), r(r), isMin(isMin) {
-            #warning Change Function init so it defaults to the opposite of your LiChaoTree
-            if (isMin) f = Function({-INF, -INF}, INF);
-            else f = Function({0, 0}, INF);
-        }
+        Vertex(int l, int r, int isMin) : f(), l(l), r(r), isMin(isMin) {}
 
         void extend() {
             if (!leftChild && l != r) {
@@ -59,7 +54,7 @@ struct LiChaoTree {
             extend();
             int m = (l + r) / 2;
             if (r == l) return f;
-            if (x < m) return best(f, leftChild->get(x), x);
+            if (x <= m) return best(f, leftChild->get(x), x);
             return best(f, rightChild->get(x), x);
         }
     };
