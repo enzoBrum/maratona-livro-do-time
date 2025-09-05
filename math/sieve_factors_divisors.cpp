@@ -20,6 +20,18 @@ vector<int> factors(int n) {
     return f;
 }
 
+vector<int> divisors(int n) {
+    vector<int> d;
+    for (int i = 1; i*i <= n; i++) {
+        if (n % i == 0) {
+            d.push_back(i);
+            if (i*i != n)
+                d.push_back(n/i);
+        }
+    }
+    return d;
+}
+
 vector<vector<int>> divsSieve(int n) {
     vector<vector<int>> divisors(n+1);
     for (int i = 1; i <= n; i++)

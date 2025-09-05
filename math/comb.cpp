@@ -1,30 +1,34 @@
-// precomputes factorials and inverse factorials
-// O(n log mod) needed for the inverse factorials
+const int MOD = 1e9+7;
 
-tuple<int, int, int> extendedGcd(int a, int b) {
-    if (b == 0) return make_tuple(a, 1, 0);
-    auto[q, w, e] = extendedGcd(b, a%b);
-    return make_tuple(q, e, w-e*(a/b));
+inline int add(int a, int b) {
+    a += b;
+    if (a >= MOD) a -= MOD;
+    return a;
 }
 
-int multiplicativeInverse(int n, int mod) {
-    auto[g, x, y] = extendedGcd(n, mod);
-    return (x % mod + mod) % mod;
-}
+inline int mul(int a, int b) { return a * b % MOD; }
 
-int mod;
-vector<int> fac, ifac;
-int comb(int n, int k) {
-    return fac[n] * ifac[k] % mod * ifac[n-k] % mod;
-}
-
-int main() {
-    const int MAXK = 5000 + 10;
-    fac.resize(MAXK);
-    ifac.resize(MAXK);
-    fac[0] = ifac[0] = 1;
-    for (int i = 1; i < MAXK; i++) {
-        fac[i] = fac[i-1] * i % mod;
-        ifac[i] = multiplicativeInverse(fac[i], mod);
+int pwr(int a, int b) {
+    int r = 1;
+    while (b) {
+        if (b & 1) r = mul(r, a);
+        a = mul(a, a);
+        b >>= 1;
     }
+    return r;
+}
+
+int inv(int x) {
+    return pwr(x, MOD-2);
+}
+
+const int MAXFAC = 1e5;
+int fac[MAXFAC+1], ifac[MAXFAC+1];
+void setup() {  
+    fac[0] = 1;
+    for (int i = 1; i <= MAXFAC; i++)
+        fac[i] = mul(fac[i-1], i);
+    ifac[MAXFAC] = inv(fac[MAXFAC]);
+    for (int i = MAXFAC-1; i >= 0; i--)
+        ifac[i] = mul(ifac[i+1], i+1);
 }

@@ -2,7 +2,7 @@
 An Eertree is a graph where each vertex represents a unique palindromic substring.
 Every palindrome is made by adding a letter to the front and the back of a palindrome. The base cases
 are the empty palindrome (of length 0) and the imaginary palindrome (of length -1). That is convenient
-because it allows us to dinamically (online) extend an eertree only by keeping track of its already
+because it allows us to dynamically (online) extend an eertree only by keeping track of its already
 existing palindromes.
  
 Claim: every new unique palindromic substring gotten by appending a new character to the string
@@ -51,35 +51,44 @@ to[last][c] = to[imag][c] is uninitialized. If we set the uninitialized value as
 will work as intended.
 If len[last] >= 0 (and len[v] = -1), it means to[v][c] is a suffix of to[last][c], and, because of our
 theorem, it is already initialized. Therefore, it is safe to grab to[v][c].
+
+About keeping non-unique palindrome count:
+Every time we add a character, we find the largest palindromic string that ends on that character. The
+palindromic substrings we missed counting are those that end on the new character but are not the largest
+palindromic substring that ends there. Namely, we missed the link of the longest palindromic suffix, then
+the link of the link of the longest palindromic suffix, and so on. This means that we can keep an additional
+vector "depth" that tells us the distance from a vertex to the REAL vertex, and whenever we append a character,
+we know that the total amount of palindromic substrings increased by depth[curVertex].
+If you need the specific count of each string, you can propagate the count from the last added vertices to
+the older ones through the suffix links, but that will be up to O(n):
+for (int i = sz-1; i >= 2; i--)
+    cnt[link[i]] += cnt[i];
 */
  
-const int MAXN = 1e6;
-const int E = 26; // alphabet
- 
 struct Eertree {
-    const static int REAL = 0;
-    const static int IMAG = 1;
+    const int REAL = 0;
+    const int IMAG = 1;
+    const static int ALPHABET = 26;
+
+    vector<int> s;
+    struct Vertex { 
+        int len, start, link, cnt, depth;
+        array<int, ALPHABET> to{}; // map<int, int> to;
+    };
+    vector<Vertex> t;
+
+    // lps stands for longest palindromic substring
+    int n=2, sz=2, last=REAL, totalPalindromes=0, lps=0, lpsPos;
  
-    int len[MAXN+2], start[MAXN+2], link[MAXN+2], cnt[MAXN+2], to[MAXN+2][E];
-    //map<int, int> to[MAXN+2];
-    int s[MAXN+2]; // the actual string is s[2:n-1]
-    int n = 2, sz = 2, last = REAL, totalPalindromes = 0;
-    int lps, lpsIdx; // longest palindromic substring
- 
-    Eertree() {
-        memset(len, 0, sizeof(len));
-        memset(start, 0, sizeof(start));
-        memset(link, 0, sizeof(link));
-        memset(cnt, 0, sizeof(cnt));
-        memset(to, 0, sizeof(to)); // REMOVE THIS WHEN USING std::map
-        len[IMAG] = -1;
-        link[IMAG] = link[REAL] = IMAG;
-        s[IMAG] = s[REAL] = -1; // value that should not be on alphabet
+    Eertree(string const &ss) : s(ss.size()+2, -1), t(ss.size()+2) {
+        t[IMAG].len = -1;
+        t[IMAG].link = t[REAL].link = IMAG;
+        for (char c : ss) addLetter(c-'a');
     }
  
     int getLink(int v) {
-        while (s[n - len[v] - 2] != s[n - 1])
-            v = link[v];
+        while (s[n - t[v].len - 2] != s[n - 1])
+            v = t[v].link;
         return v;
     }
  
@@ -87,47 +96,19 @@ struct Eertree {
         s[n++] = c;
         last = getLink(last);
  
-        //if (!to[last].count(c)) {
-        if (!to[last][c]) {
-            len[sz] = len[last] + 2;
-            //if (len[last] == -1 && len[getLink(link[last])] == -1)
-            //    to[last][c] = REAL;
-            link[sz] = to[getLink(link[last])][c];
-            start[sz] = n-2-len[sz];
-            to[last][c] = sz++;
+        if (!t[last].to[c]) {
+            t[sz] = {
+                t[last].len+2,
+                n-4-t[last].len,
+                t[getLink(t[last].link)].to[c],
+            };
+            t[sz].depth = t[t[sz].link].depth+1;
+            if (t[sz].len > lps)
+                lps = t[sz].len, lpsPos = t[sz].start;
+            t[last].to[c] = sz++;
         }
-        last = to[last][c];
-        cnt[last]++;
+        last = t[last].to[c];
+        t[last].cnt++;
+        totalPalindromes += t[last].depth;
     }
- 
-    void setupData() {
-        totalPalindromes = lps = lpsIdx = 0;
-        // this iterates over every vertex
-        for (int i = sz-1; i >= 2; i--) {
-            totalPalindromes += cnt[i];
-            cnt[link[i]] += cnt[i];
-            if (len[i] > lps) {
-                lps = len[i];
-                lpsIdx = start[i];
-            }
-        }
-    }
- 
-    inline int palindromeCount() { return totalPalindromes; }
-    inline int uniquePalindromeCount() { return sz - 2; }
-    inline ii longestPalindromicSubstring() { return {lpsIdx, lps}; }
-
-    /*
-    You can dinamically keep track of palindromic substring count by doing something like this:
-    
-    // v should be to[last][c], that is, "last" after adding a letter.
-    int increment = 0;
-    while (v != REAL) {
-        increment++;
-        v = link[v];
-    }
-    totalPalindromes += increment;
-
-    While also keeping a rollback to undo operations.
-    */
 };

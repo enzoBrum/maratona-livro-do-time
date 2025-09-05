@@ -1,8 +1,7 @@
 // {length, vertex}
-vector<vector<ii>> adj;
-
-vector<int> dijkstra(int s) {
+vector<int> dijkstra(int s, vector<vector<ii>> &adj) {
     int n = adj.size();
+    const int INF = 1e18;
     vector<int> d(n+1, INF);
     d[s] = 0;
     
@@ -11,10 +10,7 @@ vector<int> dijkstra(int s) {
     
     while (!pq.empty()) {
         auto [dist, v] = pq.top(); pq.pop();
-        
-        if (dist != d[v])
-            continue;
-            
+        if (dist != d[v]) continue;
         for (auto [len, next] : adj[v]) {
             int newDist = dist + len;
             if (newDist < d[next]) {

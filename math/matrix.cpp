@@ -18,12 +18,12 @@ struct Matrix {
         return m[idx];
     }
 
-    Matrix pow(ll e) {
+    Matrix pwr(ll e) {
         if (e == 0) return identity(l);
         if (e == 1) return *this;
         Matrix squared = (*this) * (*this);
-        if (e % 2 == 0) return squared.pow(e/2);
-        return squared.pow(e/2) * (*this);
+        if (e % 2 == 0) return squared.pwr(e/2);
+        return squared.pwr(e/2) * (*this);
     }
 
     Matrix identity(int sz) {

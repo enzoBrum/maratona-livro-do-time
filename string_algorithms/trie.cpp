@@ -1,55 +1,47 @@
 struct Trie {
-    vector<map<char, int>> next;
-    vector<int> count;
-    vector<int> mostFrequentContinuationCount;
-    vector<int> mostFrequentContinuationId;
-    vector<int> indexOnOrderedVector;
+    struct Node {
+        int count, mostFrequentContinuationCount, mostFrequentContinuationId, indexOnOrderedVector;
+        map<char, int> next;
+    };
+    vector<Node> t;
 
-    Trie() { addNode(); } // you can reserve the vectors here if you need to
+    Trie() { addNode(); } // you can reserve() here too
 
     int addNode() {
-        next.push_back({});
-        count.push_back(0);
-        mostFrequentContinuationCount.push_back(-1);
-        mostFrequentContinuationId.push_back(-1);
-        indexOnOrderedVector.push_back(0);
-        return next.size()-1;
+        t.push_back({0, -1, -1, 0, {}});
+        return t.size()-1;
     }
 
     void addWord(string const &s, int idx) {
         int cur = 0; 
         for (char c : s) {
-            if (!next[cur].count(c))
-                next[cur][c] = addNode();
-            cur = next[cur][c];
+            if (!t[cur].next.count(c))
+                t[cur].next[c] = addNode();
+            cur = t[cur].next[c];
         }
-        count[cur]++;
-        indexOnOrderedVector[cur] = idx;
+        t[cur].count++;
+        t[cur].indexOnOrderedVector = idx;
     }
 
     int getId(string const &s) {
         int cur = 0;
         for (char c : s) {
-            if (!next[cur].count(c)) return -1;
-            cur = next[cur][c];
+            if (!t[cur].next.count(c)) return -1;
+            cur = t[cur].next[c];
         }
         return cur;
-    }
-
-    int getCount(string const &s) {
-        return count[getId(s)];
     }
 
     // update 'mostFrequentContinuation' for every prefix of s
     void relax(string const &s) {
         int id = getId(s);
-        int currentCount = count[id];
+        int currentCount = t[id].count;
         int cur = 0;
         for (char c : s) {
-            cur = next[cur][c];
-            if (mostFrequentContinuationCount[cur] < currentCount) {
-                mostFrequentContinuationCount[cur] = currentCount;
-                mostFrequentContinuationId[cur] = id;
+            cur = t[cur].next[c];
+            if (t[cur].mostFrequentContinuationCount < currentCount) {
+                t[cur].mostFrequentContinuationCount = currentCount;
+                t[cur].mostFrequentContinuationId = id;
             }
         }
     }

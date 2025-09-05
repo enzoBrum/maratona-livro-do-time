@@ -12,7 +12,7 @@ it means that a pattern matched i - (pat.size()-1) positions before.
 */
 
 vector<int> buildLps(string &s) {
-    int n = s.length();
+    int n = s.size();
     vector<int> lps(n);
     for (int i = 1; i < n; i++) {
         int j = lps[i-1];

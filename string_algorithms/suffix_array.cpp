@@ -1,55 +1,39 @@
-vector<int> sortCyclicShifts(string &s) {
-    int n = s.size();
-    const int alphabet = 256;
-    vector<int> p(n), c(n), cnt(max(alphabet, n), 0);
-    for (int i = 0; i < n; i++)
-        cnt[s[i]]++;
-    for (int i = 1; i < alphabet; i++)
-        cnt[i] += cnt[i-1];
-    for (int i = 0; i < n; i++)
-        p[--cnt[s[i]]] = i;
-    c[p[0]] = 0;
-    int classes = 1;
-    for (int i = 1; i < n; i++) {
-        if (s[p[i]] != s[p[i-1]])
-            classes++;
-        c[p[i]] = classes - 1;
-    }
-    vector<int> pn(n), cn(n);
-    for (int h = 0; (1 << h) < n; ++h) {
-        for (int i = 0; i < n; i++) {
-            pn[i] = p[i] - (1 << h);
-            if (pn[i] < 0)
-                pn[i] += n;
-        }
-        fill(cnt.begin(), cnt.begin() + classes, 0);
-        for (int i = 0; i < n; i++)
-            cnt[c[pn[i]]]++;
-        for (int i = 1; i < classes; i++)
-            cnt[i] += cnt[i-1];
-        for (int i = n-1; i >= 0; i--)
-            p[--cnt[c[pn[i]]]] = pn[i];
-        cn[p[0]] = 0;
-        classes = 1;
-        for (int i = 1; i < n; i++) {
-            pair<int, int> cur = {c[p[i]], c[(p[i] + (1 << h)) % n]};
-            pair<int, int> prev = {c[p[i-1]], c[(p[i-1] + (1 << h)) % n]};
-            if (cur != prev)
-                ++classes;
-            cn[p[i]] = classes - 1;
-        }
-        c.swap(cn);
-        if (c[p[n-1]] == n-1) break;
-    }
+vector<int> getSuffixArray(string s) {
+	s += (char)30; // smaller than both '$' and ' '
+	int n = s.size(), E = max(n, 256);
+	vector<int> p(n), c(n);
+	for (int i = 0; i < n; i++) p[i] = i, c[i] = s[i];
+
+	for (int k = 0; k < n; k ? k *= 2 : k++) {
+		vector<int> pn(p), cn(n), cnt(E);
+		for (int i = 0; i < n; i++) pn[i] = (pn[i]-k+n)%n, cnt[c[i]]++;
+		for (int i = 1; i < E; i++) cnt[i] += cnt[i-1];
+		for (int i = n-1; i >= 0; i--) p[--cnt[c[pn[i]]]] = pn[i];
+		for (int i = 1, r = 0; i < n; i++)
+            cn[p[i]] = r += (
+                c[p[i]] != c[p[i-1]]
+                || c[(p[i]+k)%n] != c[(p[i-1]+k)%n]
+            );
+		c.swap(cn);
+		if (c[p[n-1]] == n-1) break;
+	}
+    p.erase(p.begin());
     return p;
 }
 
-vector<int> getSuffixArray(string &s) {
-    s += '$';
-    vector<int> ans = sortCyclicShifts(s);
-    s.pop_back();
-    ans.erase(ans.begin());
-    return ans;
+// O(|pat| * log(|text|))
+// Every interval [l, r] is either completely contained in another, or doesn't intersect at all.
+ii search(vector<int> &sa, string &text, string &pat) {
+    auto cmp1 = [&](int idx, string const &pat) {
+        return text.compare(idx, pat.size(), pat) < 0;
+    };
+    auto cmp2 = [&](int idx, string const &pat) {
+        return text.compare(idx, pat.size(), pat) > 0;
+    };
+    int l = lower_bound(all(sa), pat, cmp1) - sa.begin();
+    int r = lower_bound(rall(sa), pat, cmp2) - sa.rbegin();
+    if (l == sa.size() || text.compare(sa[l], pat.size(), pat) != 0) return {-1, -1};
+    return {l, sa.size()-1-r};
 }
 
 /*
