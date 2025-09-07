@@ -17,11 +17,16 @@ for (int mask = 0; mask < (1 << n); ++mask)
       else
           // outside subset
 
-          // Generate all combinations C(n, k). IDK how it works, but it does.
-          int n,
-          k;
+// Generate all combinations C(n, k). IDK how it works, but it does.
+int n,
+k;
 int mask = (1 << k) - 1, r, c;
 while (mask <= (1 << n) - (1 << (n - k))) {
   // code here
   c = mask & -mask, r = mask + c, mask = r | (((r ^ mask) >> 2) / c);
 }
+
+
+// ALL submasks of given mask
+for (int s=m; s; s=(s-1)&m)
+  ...
