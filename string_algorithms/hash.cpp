@@ -8,6 +8,7 @@ int uniform(int l, int r) {
     return uid(gen);
 }
 
+// h[i] is p^(i)s[0] + p^(i-1)s[1] + ... + p^(0)s[i]
 template<int MOD> struct Hash {
     inline static int P = uniform(256, MOD - 1); // l should be > alphabet
     vector<ll> h, p;
